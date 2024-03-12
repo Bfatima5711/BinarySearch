@@ -1,0 +1,82 @@
+
+
+class Solution {
+
+    public int findTargetIdx(int[] arr, int low, int high, int target){
+        if(low > high){
+            return -1;
+        }
+
+        int mid =low + (high-low)/2;
+
+        if(arr[mid] == target){
+            return mid;
+        }else if(arr[mid] < target){
+            return findTargetIdx(arr, mid+1, high, target);
+        }
+
+        return findTargetIdx(arr, low, mid-1, target);
+    }
+    public int search(int[] nums, int target) {
+        //Approach 1: Brute Force TC:O(n) SC:O(1)
+        int n = nums.length;
+        for(int i=0; i<n; i++){
+            if(nums[i]==target){
+                return i;
+            }
+        }
+
+        return -1;
+
+        //Approach 2: Better TC:O(n/2) SC:O(1)
+        int n = nums.length;
+        int i = 0;
+        int j = n-1;
+        while(i<=j){
+            if(nums[i]==target){
+                return i;
+            }else if(nums[j]==target){
+                return j;
+            }
+            i++;
+            j--;
+        }
+        return -1;
+
+        //Approach 3: Optimal Using Binary Search TC:log2n SC:O(1)
+        // In the algorithm, in every step, we are basically dividing the search space into 2 equal halves. 
+        //This is actually equivalent to dividing the size of the array by 2, every time. After a certain number 
+        //of divisions, the size will reduce to such an extent that we will not be able to divide that anymore and 
+        //the process will stop. The number of total divisions will be equal to the time complexity.Let’s derive 
+        //the number of divisions mathematically, If a number n can be divided by 2 for x times:2^x = n Therefore, 
+        //x = logn (base is 2)
+
+        int n = nums.length;
+        int low = 0;
+        int high = n-1;
+
+        while(low<=high){
+            int mid = (low+high)/2;
+
+            if(nums[mid] == target){
+                return mid;
+            }else if(nums[mid]<target){
+                low = mid + 1;
+            }else{
+                high = mid - 1;
+            }
+        }
+        return -1;
+
+        //while finding out mid if we have element value INT_MAX then we will be adding low + high means 
+        //INT_MAX+INT_MAX it will give overflow problem bcs of that while finding out mid if the element rnge is 
+        //given betwwen 1 to 10^6 or 7 then we can use formula mid = low + (high-low) / 2 here, we are first 
+        //substracting high - low means INT_MAX - INT_MAX and then adding means it is only considering INT_MAX
+        // so it will not give overflow error
+
+         //Approach 4: Optimal Using Binary Search ans recursion TC:log2n SC:O(1)
+
+         int n  =nums.length;
+         return findTargetIdx(nums, 0, n-1, target);
+    }
+}
