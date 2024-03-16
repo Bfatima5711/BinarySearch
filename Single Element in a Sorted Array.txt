@@ -1,24 +1,78 @@
-3-Month Coding Challenge!!!
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        //Approach 1: Brute Force TC:O(n) SC:O(1)
+        int n = nums.length;
 
-Week-4: Day-4
+        for(int i=1; i<n; i+=2){
+            if(nums[i]!=nums[i-1]){
+                return nums[i-1];
+            }
+        }
+        return nums[n-1];   // this cover the base case that is array contains 1 elmnt
+                            // or the last elmnt of array is single elmnt
 
-Problem Statement: Single Element in a Sorted Array
 
-Given:
 
-Problem Link: https://leetcode.com/problems/single-element-in-a-sorted-array/
 
-GitHub Link: https: https://github.com/Bfatima5711/BinarySearch 
 
-cc 
+        //Approach 2: Brute Force TC:O(n) SC:O(1)
+        int n = nums.length;
 
-#datastructuresandalgorithms #arrays #javacoding #javadevelopment #codingchallenge #java8 #leedcode #leedcodecontest #dsa #geeksforgeeks #problemsolving 
-//Medium level : question 1
+        if(n==1){
+            return nums[0];
+        }
 
-Problem Statement: Single Element in a Sorted Array
+        for(int i=0; i<n; i++){
+            if(i==0){
+                if(nums[i]!=nums[i+1]) return nums[i];
+            }else if(i==n-1){
+                if(nums[i]!=nums[i-1]) return nums[i];
+            }else if(nums[i]!=nums[i-1] && nums[i]!=nums[i+1]){
+                return nums[i];
+            }
+        }
 
-Given:
+        return -1;
+        
+        //Approach 3: Brute Force TC:O(n) SC:O(1)
+        int n = nums.length, ans = 0;
 
-Problem Link: https://leetcode.com/problems/single-element-in-a-sorted-array/
+        if(n==1){
+            return nums[0];
+        }
 
-Note: for code check attached file with name Single Element in a Sorted Array
+        //using XOR here a^a = 0, a^0 = a
+
+        for(int i=0; i<n; i++){
+            ans = ans ^ nums[i];
+        }
+
+        return ans;
+
+        //Approach 4: Optimal using binary search TC:O(logn) SC:O(1)
+        int n = nums.length;
+
+        if(n==1) return nums[0];
+        if(nums[0]!=nums[1]) return nums[0];
+        if(nums[n-1]!=nums[n-2]) return nums[n-1];
+
+        int low = 1, high = n-1;
+
+        while(low <= high){
+            int mid = (low + high) / 2;
+
+            if(nums[mid] != nums[mid-1] && nums[mid] != nums[mid+1]){
+                return nums[mid];
+            }
+
+            if((mid%2==1 && nums[mid]==nums[mid-1]) || (mid%2==0 && nums[mid]==nums[mid+1])){
+                low = mid + 1;
+            }else{
+                high = mid - 1;
+            }
+        }
+        return -1;
+       
+
+    }
+}
