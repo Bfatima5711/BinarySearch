@@ -1,0 +1,59 @@
+class Solution {
+
+    public int findRowIdx(int[][] mat, int n, int m, int col){
+        int maxIdx = -1, maxVal = -1;
+        for(int i=0; i<n; i++){
+            if(mat[i][col] > maxVal){
+                maxVal = mat[i][col];
+                maxIdx = i;
+            }
+        } 
+
+        return maxIdx;
+    }
+    public int[] findPeakGrid(int[][] mat) {
+        //Approach 1: Brute Force TC:O(n*m) SC:O(1)
+        int n = mat.length;
+        int m = mat[0].length;
+        int i = -1, j = -1, peak = -1;
+
+        //if we find out the largest elmnt in 2d matrix this also works here no 
+        //need to check 4 directions
+        for(int row=0; row<n; row++){
+            for(int col=0; col<m; col++){
+                if(mat[row][col]>peak){
+                    peak = mat[row][col];
+                    i = row;
+                    j = col;
+                } 
+            }
+        }
+
+        return new int[]{i, j};
+
+        //Approach 2: Optimal TC:O(nlogm) SC:O(1)
+
+        int n = mat.length;
+        int m = mat[0].length;
+        int low = 0, high = m-1;
+
+        while(low <= high){//TC:O(logm) for binary search overall TC:O(n*logm)
+            int mid = (low + high) / 2;
+
+            int maxRowIdx = findRowIdx(mat, n, m, mid);//TC:O(n)
+
+            int left = (mid-1)>=0? mat[maxRowIdx][mid-1]:-1;
+            int right = (mid+1)<m? mat[maxRowIdx][mid+1]:-1;
+
+            if(mat[maxRowIdx][mid] > left && mat[maxRowIdx][mid] > right){
+                return new int[]{maxRowIdx, mid};
+            }else if(mat[maxRowIdx][mid] < left){
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
+        }
+
+        return new int[]{-1, -1};
+    }
+}
