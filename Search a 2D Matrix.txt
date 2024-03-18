@@ -1,0 +1,67 @@
+class Solution {
+    public boolean binarySearch(int[][] matrix,int r, int m,int target){
+        int low = 0, high = m-1;
+
+        while(low <= high){
+            int mid = (low + high) / 2;
+
+            if(matrix[r][mid]==target){
+                return true;
+            }else if(matrix[r][mid] < target){
+                low = mid + 1;
+            }else{
+                high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+    public boolean searchMatrix(int[][] matrix, int target) {
+        //Approach 1: Brute Force TC:O(n*m) SC:O(1)
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(matrix[i][j]==target){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+        //Approach 2: Better TC:O(n) + O(logm) SC:O(1)
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+        
+        for(int i=0; i<n; i++){
+            if(matrix[i][0] <= target && target <= matrix[i][m-1]){
+                return binarySearch(matrix, i, m, target);
+            }
+        }
+        return false;
+
+        //Approach 3: Optimal TC:O(logm*n) SC:O(1) convert 2D into 1D array and doing binary search
+        
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int low = 0, high = (m*n)-1;//last idx of 2d array
+
+        while(low <= high){
+            int mid = (low + high) / 2;
+
+            int row = mid / m;//formula - find row in 2d using 1d idx here idx is mid 
+            int col = mid % m;//formula - find col in 2d sing 1d idx
+
+            if(matrix[row][col] == target){
+                return true;
+            }else if(matrix[row][col] < target){
+                low = mid + 1;
+            }else{
+                high = mid - 1;
+            }
+        }
+        return false; 
+    }
+}
