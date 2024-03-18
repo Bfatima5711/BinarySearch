@@ -195,3 +195,45 @@ n == matrix[i].length
 Problem Link: https://leetcode.com/problems/search-a-2d-matrix/description/
 
 Note: for code check attached file with name Search a 2D Matrix
+
+//Medium level : question 6
+
+Problem Statement: Aggressive Cows
+
+Given:
+You are given an array 'arr' consisting of 'n' integers which denote the position of a stall.
+You are also given an integer 'k' which denotes the number of aggressive cows.
+You are given the task of assigning stalls to 'k' cows such that the minimum distance between any two of them is the maximum possible.
+Print the maximum possible minimum distance.
+
+Example:
+Input: 'n' = 3, 'k' = 2 and 'arr' = {1, 2, 3}
+Output: 2
+Explanation: The maximum possible minimum distance will be 2 when 2 cows are placed at positions {1, 3}. Here distance between cows is 2.
+
+Sample Input 1 :
+6 4
+0 3 4 7 10 9
+Sample Output 1 :
+3
+Explanation to Sample Input 1 :
+The maximum possible minimum distance between any two cows will be 3 when 4 cows are placed at positions {0, 3, 7, 10}. Here distance between cows are 3, 4 and 3 respectively.
+
+Sample Input 2 :
+5 2
+4 2 1 3 6
+Sample Output 2 :
+5
+
+Expected time complexity:
+Can you solve this in O(n * log(n)) time complexity?
+
+Constraints :
+2 <= 'n' <= 10 ^ 5
+2 <= 'k' <= n
+0 <= 'arr[i]' <= 10 ^ 9
+Time Limit: 1 sec.
+
+Problem Link: https://www.codingninjas.com/studio/problems/aggressive-cows_1082559?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=PROBLEM
+
+Note: for code check attached file with name Aggressive Cows
