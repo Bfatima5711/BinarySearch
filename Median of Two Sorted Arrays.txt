@@ -1,0 +1,113 @@
+
+class Solution {
+    public double findMedianSortedArrays(int[] arr1, int[] arr2) {
+        //Approach 1: Brute Force TC:O(n+m) SC:O(n+m)
+        int n = arr1.length, m = arr2.length;
+        int i=0;
+        int j=0;
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        while(i<n && j<m){
+            if(arr1[i]<=arr2[j]){
+                ans.add(arr1[i++]);
+            }else{
+                ans.add(arr2[j++]);
+            }
+        }
+        
+        while(i<n){
+            ans.add(arr1[i++]);
+        }
+        while(j<m){
+            ans.add(arr2[j++]);
+        }
+
+        int size = ans.size();
+        int idx = size/2;
+
+        if(size%2==0){
+            double res = ((double)ans.get(idx) + (double)ans.get(idx-1))/2.0;
+            return res;
+        }
+
+        return ans.get(idx);
+
+        //Approach 2: Better TC:O(n1+n2) SC:O(1)
+        int n1 = arr1.length, n2 = arr2.length;
+        int n = n1 + n2;
+        int i=0;
+        int j=0;
+        int idx2 = n/2;
+        int idx1 = (n/2)-1;
+        int cnt = 0;
+        int elmnt1 = 0;
+        int elmnt2 = 0;
+
+        while(i<n1 && j<n2){
+            if(arr1[i]<arr2[j]){
+                if(cnt==idx1) elmnt1 = arr1[i];
+                if(cnt==idx2) elmnt2 = arr1[i];
+                cnt++;
+                i++;
+            }else{
+                if(cnt==idx1) elmnt1 = arr2[j];
+                if(cnt==idx2) elmnt2 = arr2[j];
+                cnt++;
+                j++; 
+            }
+        }
+        while(i<n1){
+            if(cnt==idx1) elmnt1 = arr1[i];
+            if(cnt==idx2) elmnt2 = arr1[i];
+            cnt++;
+            i++;
+        }
+        while(j<n2){
+            if(cnt==idx1) elmnt1 = arr2[j];
+            if(cnt==idx2) elmnt2 = arr2[j];
+            cnt++;
+            j++;
+        }
+
+        if(n % 2 == 1){
+            return (double)elmnt2;
+        }
+
+        return (double)((double) (elmnt1 + elmnt2))/2.0;
+
+        //Approach 3: Optimal TC:O(min(logn1, logn2)) SC:O(1)
+
+        int n1 = arr1.length;
+        int n2 = arr2.length;
+        int n = n1 + n2;
+        if(n1 > n2) return findMedianSortedArrays(arr2, arr1);//to make sure 1st array is always smaller
+        int left = (n1 + n2 + 1) / 2;//it will calculte mid 1 this will wprk for both odd & even length arr
+        int low = 0, high = n1;
+
+        while(low <= high){
+            int mid1 = (low + high) / 2;
+            int mid2 = left - mid1;
+            int l1 = Integer.MIN_VALUE, l2 = Integer.MIN_VALUE;
+            int r1 = Integer.MAX_VALUE, r2 = Integer.MAX_VALUE;
+
+            if(mid1 < n1) r1 = arr1[mid1];
+            if(mid2 < n2) r2 = arr2[mid2];
+            if((mid1 - 1) >= 0) l1 = arr1[mid1 - 1];
+            if((mid2 - 1) >= 0) l2 = arr2[mid2 - 1];
+
+            if(l1 <= r2 && l2 <= r1){
+                if(n % 2 == 1) {
+                    return (double) Math.max(l1, l2);
+                }else{
+                    return (double)((double)((Math.max(l1, l2)) + (Math.min(r1, r2))))/2.0;
+                }
+            }else if(l1 > r2){
+                high = mid1 - 1;
+            }else{
+                low = mid1 + 1;
+            }
+        }
+        return 0;
+    }
+}
